@@ -17,5 +17,14 @@ abstract final class AppTheme {
     );
   }
 
-  
+  static ThemeData dark() {
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: seedColor,
+        brightness: Brightness.dark,
+      ),
+      appBarTheme: const AppBarTheme(centerTitle: true),
+    );
+  }
 }
