@@ -122,3 +122,11 @@ app.*.symbols
 ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
 ios/Runner.xcworkspace/xcshareddata/swiftpm/
 .swiftpm/
+
+
+# macOs system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
