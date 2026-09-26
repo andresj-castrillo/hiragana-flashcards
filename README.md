@@ -14,6 +14,22 @@ A mobile flashcard app for learning the Japanese Hiragana syllabary, built with 
   - **Speak the sound** and get it checked with on-device speech recognition (works offline).
 - Track progress per card (correct/incorrect streaks) to resurface the ones you struggle with.
 
-## License
+## Project Structure
 
-MIT — see [LICENSE](LICENSE).
+```text
+lib/
+├── core/       # Theme, app-wide constants, and styling
+├── data/       # Master Hiragana dataset and default decks
+├── models/     # Domain models (Kana, FlashcardDeck, PracticeResult, CustomDeckRecord)
+├── screens/    # App screens (Home, Deck Selection, Practice, Study, Custom Builder)
+├── services/   # Local storage services (SharedPreferences, CustomDeckStorage)
+└── widgets/    # Reusable UI components (Interactive Flashcards)
+
+
+## License and Rights of Use
+
+Copyright © 2026 Andres Jose Castrillo Torres. All rights reserved.
+
+This repository is made publicly available **strictly for personal portfolio showcase and code demonstration purposes**. 
+
+Unauthorized copying, modification, redistribution, or commercial use of this software, in whole or in part, is strictly prohibited without explicit written permission from the author.

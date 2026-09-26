@@ -165,8 +165,8 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen> {
     return SizedBox(
       width: double.infinity,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,      // Centrado vertical
-      crossAxisAlignment: CrossAxisAlignment.center,   // 👈 Centrado horizontal explícito
+        mainAxisAlignment: MainAxisAlignment.center,      
+        crossAxisAlignment: CrossAxisAlignment.center,   
       children: [
         Icon(
           Icons.emoji_events, 
@@ -177,7 +177,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen> {
         Text(
           'Session complete!', 
           style: Theme.of(context).textTheme.headlineSmall,
-          textAlign: TextAlign.center, // 👈 Asegura el centrado del texto
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 8),
         Text(
