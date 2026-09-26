@@ -57,13 +57,13 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen> {
     super.dispose();
   }
 
-  bool get _isSessionComplete => _index >= widget.deck.cards.length;
+  bool get _isSessionComplete => _index >= _sessionCards.length;
 
   Future<void> _submit() async {
     if (_isSessionComplete || _lastAnswerCorrect != null) return;
 
     // get card, format input and check anwser 
-    final card = widget.deck.cards[_index];
+    final card = _sessionCards[_index];
     final userInput = _controller.text.trim().toLowerCase();
     final wasCorrect = userInput == card.romaji.toLowerCase();
 
@@ -103,16 +103,16 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen> {
   }
 
   Widget _buildPracticeCard(BuildContext context) {
-    final card = widget.deck.cards[_index];
+    final card = _sessionCards[_index];
     final answered = _lastAnswerCorrect != null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        LinearProgressIndicator(value: _index / widget.deck.cards.length),
+        LinearProgressIndicator(value: _index / _sessionCards.length),
         const SizedBox(height: 8),
         Text(
-          'Card ${_index + 1} of ${widget.deck.cards.length}',
+          'Card ${_index + 1} of ${_sessionCards.length}',
           style: Theme.of(context).textTheme.bodySmall,
           textAlign: TextAlign.center,
         ),
