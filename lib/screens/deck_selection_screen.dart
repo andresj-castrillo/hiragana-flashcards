@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/kana_dataset.dart';
 import '../models/flashcard_deck.dart';
 import 'flashcard_practice_screen.dart';
+import 'study_screen.dart';
 
 /// Lets the user pick which deck to study 
 /// built in - default decks 
@@ -38,10 +39,53 @@ class _DeckTile extends StatelessWidget {
         title: Text(deck.name, style: Theme.of(context).textTheme.titleMedium),
         subtitle: Text(deck.description ?? ''),
         trailing: Chip(label: Text('${deck.length}')),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => FlashcardPracticeScreen(deck: deck)),
+        onTap: () => _showModePicker(context),
         ),
-      ),
+    );
+  }
+
+  Future<void> _showModePicker(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(deck.name, style: Theme.of(sheetContext).textTheme.titleMedium),
+                const SizedBox(height: 12),
+                ListTile(
+                  leading: const Icon(Icons.menu_book),
+                  title: const Text('Study'),
+                  subtitle: const Text('Browse the cards — no checking, just learning.'),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => StudyScreen(deck: deck)),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.quiz),
+                  title: const Text('Practice'),
+                  subtitle: const Text('Get quizzed and track your progress.'),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => FlashcardPracticeScreen(deck: deck)),
+                    );
+                  },
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
