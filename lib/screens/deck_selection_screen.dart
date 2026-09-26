@@ -75,8 +75,62 @@ class _DeckTile extends StatelessWidget {
                   subtitle: const Text('Get quizzed and track your progress.'),
                   onTap: () {
                     Navigator.of(sheetContext).pop();
+                    _showOrderPicker(context);
+                  },
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  
+  Future<void> _showOrderPicker(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text('Card order', style: Theme.of(sheetContext).textTheme.titleMedium),
+                const SizedBox(height: 12),
+                ListTile(
+                  leading: const Icon(Icons.format_list_numbered),
+                  title: const Text('In order'),
+                  subtitle: const Text('Go through the deck from first to last.'),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => FlashcardPracticeScreen(deck: deck)),
+                      MaterialPageRoute(
+                        builder: (_) => FlashcardPracticeScreen(
+                          deck: deck,
+                          order: PracticeOrder.sequential,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.shuffle),
+                  title: const Text('Random'),
+                  subtitle: const Text('Shuffle the cards for this session.'),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => FlashcardPracticeScreen(
+                          deck: deck,
+                          order: PracticeOrder.random,
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -88,4 +142,7 @@ class _DeckTile extends StatelessWidget {
       },
     );
   }
+  
 }
+
+
