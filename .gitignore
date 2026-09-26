@@ -130,3 +130,10 @@ ios/Runner.xcworkspace/xcshareddata/swiftpm/
 ._*
 .Spotlight-V100
 .Trashes
+
+
+# Android temporal y builds
+android/.gradle/
+android/.kotlin/
+android/app/build/
+android/build/
