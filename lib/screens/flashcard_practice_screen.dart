@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 
 import '../models/flashcard_deck.dart';
+import '../models/kana.dart';
 import '../services/storage_service.dart';
 import '../widgets/flashcard_widget.dart';
 
+import 'dart:math';
+
+/// for deck studied in order or shuffle for that session
+enum PracticeOrder { sequential, random}
+
 /// working practice loop: see the kana, type its romaji.
 class FlashcardPracticeScreen extends StatefulWidget {
-  const FlashcardPracticeScreen({super.key, required this.deck});
+  const FlashcardPracticeScreen({
+    super.key, 
+    required this.deck,
+    this.order = PracticeOrder.sequential,
+    });
 
   final FlashcardDeck deck;
+  final PracticeOrder order;
 
   @override
   State<FlashcardPracticeScreen> createState() => _FlashcardPracticeScreenState();
@@ -19,6 +30,8 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen> {
   final FocusNode _focusNode = FocusNode();
   late Future<StorageService> _storageFuture;
 
+  late final List<Kana> _sessionCards;
+
   int _index = 0;
   int _correct = 0;
   int _incorrect = 0;
@@ -28,6 +41,13 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen> {
   void initState() {
     super.initState();
     _storageFuture = StorageService.create();
+
+    // copy decks card for shufflign 
+    _sessionCards = List<Kana>.from(widget.deck.cards);
+
+    if (widget.order == PracticeOrder.random) {
+      _sessionCards.shuffle(Random());
+    }
   }
 
   @override
@@ -42,6 +62,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen> {
   Future<void> _submit() async {
     if (_isSessionComplete || _lastAnswerCorrect != null) return;
 
+    // get card, format input and check anwser 
     final card = widget.deck.cards[_index];
     final userInput = _controller.text.trim().toLowerCase();
     final wasCorrect = userInput == card.romaji.toLowerCase();
