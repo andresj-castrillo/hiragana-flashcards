@@ -132,7 +132,7 @@ ios/Runner.xcworkspace/xcshareddata/swiftpm/
 .Trashes
 
 
-# Android temporal y builds
+# Temp Android and builds
 android/.gradle/
 android/.kotlin/
 android/app/build/

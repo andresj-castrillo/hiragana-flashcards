@@ -31,7 +31,7 @@ class _DeckSelectionScreenState extends State<DeckSelectionScreen> {
   }
 
   Future<void> _loadCustomDecks() async {
-    final storage = await _storageFuture;
+    final storage = await CustomDeckStorage.create();
     if (!mounted) return;
     setState(() => _customDecks = storage.all);
   }
