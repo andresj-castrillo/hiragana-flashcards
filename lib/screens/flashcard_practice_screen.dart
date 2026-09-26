@@ -157,25 +157,41 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen> {
       ],
     );
   }
-
+  
   Widget _buildSummary(BuildContext context) {
     final total = _correct + _incorrect;
     final accuracyPct = total == 0 ? 0 : ((_correct / total) * 100).round();
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,      // Centrado vertical
+      crossAxisAlignment: CrossAxisAlignment.center,   // 👈 Centrado horizontal explícito
       children: [
-        Icon(Icons.emoji_events, size: 64, color: Theme.of(context).colorScheme.primary),
+        Icon(
+          Icons.emoji_events, 
+          size: 64, 
+          color: Theme.of(context).colorScheme.primary,
+        ),
         const SizedBox(height: 16),
-        Text('Session complete!', style: Theme.of(context).textTheme.headlineSmall),
+        Text(
+          'Session complete!', 
+          style: Theme.of(context).textTheme.headlineSmall,
+          textAlign: TextAlign.center, // 👈 Asegura el centrado del texto
+        ),
         const SizedBox(height: 8),
-        Text('$_correct / $total correct ($accuracyPct%)'),
+        Text(
+          '$_correct / $total correct ($accuracyPct%)',
+          textAlign: TextAlign.center,
+        ),
         const SizedBox(height: 24),
         FilledButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Back to decks'),
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
+
 }
