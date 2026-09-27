@@ -106,55 +106,57 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen> {
     final card = _sessionCards[_index];
     final answered = _lastAnswerCorrect != null;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        LinearProgressIndicator(value: _index / _sessionCards.length),
-        const SizedBox(height: 8),
-        Text(
-          'Card ${_index + 1} of ${_sessionCards.length}',
-          style: Theme.of(context).textTheme.bodySmall,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 24),
-        FlashcardWidget(prompt: card.character, caption: 'Type the romaji'),
-        const SizedBox(height: 24),
-        TextField(
-          controller: _controller,
-          focusNode: _focusNode,
-          autofocus: true,
-          enabled: !answered,
-          textAlign: TextAlign.center,
-          textInputAction: TextInputAction.done,
-          onSubmitted: (_) => _submit(),
-          decoration: InputDecoration(
-            labelText: 'Romaji',
-            border: const OutlineInputBorder(),
-            filled: answered,
-            fillColor: answered
-                ? (_lastAnswerCorrect!
-                    ? Colors.green.withValues(alpha: 0.1)
-                    : Colors.red.withValues(alpha: 0.1))
-                : null,
-          ),
-        ),
-        const SizedBox(height: 16),
-        if (answered)
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          LinearProgressIndicator(value: _index / _sessionCards.length),
+          const SizedBox(height: 8),
           Text(
-            _lastAnswerCorrect!
-                ? 'Correct! 🎉'
-                : 'Not quite — it\'s "${card.romaji}".',
+            'Card ${_index + 1} of ${_sessionCards.length}',
+            style: Theme.of(context).textTheme.bodySmall,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: _lastAnswerCorrect! ? Colors.green[700] : Colors.red[700],
-                ),
           ),
-        const SizedBox(height: 16),
-        FilledButton(
-          onPressed: answered ? _next : _submit,
-          child: Text(answered ? 'Next' : 'Check'),
-        ),
-      ],
+          const SizedBox(height: 24),
+          FlashcardWidget(prompt: card.character, caption: 'Type the romaji'),
+          const SizedBox(height: 24),
+          TextField(
+            controller: _controller,
+            focusNode: _focusNode,
+            autofocus: true,
+            enabled: !answered,
+            textAlign: TextAlign.center,
+            textInputAction: TextInputAction.done,
+            onSubmitted: (_) => _submit(),
+            decoration: InputDecoration(
+              labelText: 'Romaji',
+              border: const OutlineInputBorder(),
+              filled: answered,
+              fillColor: answered
+                  ? (_lastAnswerCorrect!
+                      ? Colors.green.withValues(alpha: 0.1)
+                      : Colors.red.withValues(alpha: 0.1))
+                  : null,
+            ),
+          ),
+          const SizedBox(height: 16),
+          if (answered)
+            Text(
+              _lastAnswerCorrect!
+                  ? 'Correct! 🎉'
+                  : 'Not quite — it\'s "${card.romaji}".',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: _lastAnswerCorrect! ? Colors.green[700] : Colors.red[700],
+                  ),
+            ),
+          const SizedBox(height: 16),
+          FilledButton(
+            onPressed: answered ? _next : _submit,
+            child: Text(answered ? 'Next' : 'Check'),
+          ),
+        ],
+      ),
     );
   }
   
@@ -193,5 +195,6 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen> {
       ),
     );
   }
+  
 
 }
