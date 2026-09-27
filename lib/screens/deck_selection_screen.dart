@@ -7,7 +7,7 @@ import 'study_screen.dart';
 import '../models/custom_deck_record.dart';
 import '../services/custom_deck_storage.dart';
 import 'custom_deck_builder_screen.dart';
-
+import 'progress_overview_screen.dart';
 
 /// Lets the user pick which deck to study 
 /// built in - default decks 
@@ -99,7 +99,18 @@ class _DeckSelectionScreenState extends State<DeckSelectionScreen> {
     final builtInDecks = KanaDataset.defaultDecks;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Choose a deck')),
+      appBar: AppBar(
+        title: const Text('Choose a deck'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.insights),
+            tooltip: 'Your progress',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const ProgressOverviewScreen()),
+            ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _createDeck,
         icon: const Icon(Icons.add),
