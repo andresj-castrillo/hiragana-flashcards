@@ -6,25 +6,50 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///
 /// Stored as `kanaId -> {correct, incorrect}` map under one SharedPreferences key.
 class CardStats {
-  const CardStats({this.correctCount = 0, this.incorrectCount = 0});
- 
+  const CardStats({
+    this.correctCount = 0, 
+    this.incorrectCount = 0,
+    this.recentAttempts = const [],
+    });
+  
+  /// how many attempts to remember per card 
+  /// used for recall trend of that recent attempts 
+  /// not use only lifetime average 
+  static const int maxRecentAttempts = 10;
+
   final int correctCount;
   final int incorrectCount;
- 
+  
+  // oldest to newest list of recent pass fail result of that kana, max -> maxRecentAttempts
+  final List<bool> recentAttempts;
+
   int get totalAttempts => correctCount + incorrectCount;
  
   double get accuracy => totalAttempts == 0 ? 0 : correctCount / totalAttempts;
  
-  CardStats withResult(bool wasCorrect) => CardStats(
-        correctCount: correctCount + (wasCorrect ? 1 : 0),
-        incorrectCount: incorrectCount + (wasCorrect ? 0 : 1),
-      );
- 
-  Map<String, dynamic> toJson() => {'c': correctCount, 'i': incorrectCount};
- 
+  CardStats withResult(bool wasCorrect) {
+    final updatedRecent = [...recentAttempts, wasCorrect];
+    if (updatedRecent.length > maxRecentAttempts) {
+      updatedRecent.removeAt(0);
+    }
+    return CardStats(
+      correctCount: correctCount + (wasCorrect ? 1 : 0),
+      incorrectCount: incorrectCount + (wasCorrect ? 0 : 1),
+      recentAttempts: updatedRecent,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'c': correctCount,
+        'i': incorrectCount,
+        'r': recentAttempts,
+      };
+
   factory CardStats.fromJson(Map<String, dynamic> json) => CardStats(
         correctCount: json['c'] as int? ?? 0,
         incorrectCount: json['i'] as int? ?? 0,
+        // Absent for progress saved before this field existed defaults to empty
+        recentAttempts: (json['r'] as List<dynamic>?)?.cast<bool>() ?? const [],
       );
 }
  
