@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'core/theme/app_theme.dart';
+import 'core/theme/theme_controller.dart'; 
 import 'screens/home_screen.dart';
 
 void main() async {
@@ -12,21 +14,31 @@ void main() async {
     debugPrint("Error de Flutter: ${details.exception}");
   };
 
-  runApp(const HiraganaFlashcardsApp());
+  final themeController = await ThemeController.create();
+
+  runApp(HiraganaFlashcardsApp(themeController: themeController));
 }
 
 /// Root widget of the Hiragana Flashcards app.
 class HiraganaFlashcardsApp extends StatelessWidget {
-  const HiraganaFlashcardsApp({super.key});
+  const HiraganaFlashcardsApp({super.key, required this.themeController});
+
+  final ThemeController themeController;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Hiragana Flashcards',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
-      home: const HomeScreen(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeController,
+      builder: (context, mode, _) {
+        return MaterialApp(
+          title: 'Hiragana Flashcards',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light(),
+          darkTheme: AppTheme.dark(),
+          themeMode: mode,
+          home: HomeScreen(themeController: themeController),
+        );
+      },
     );
   }
 }
