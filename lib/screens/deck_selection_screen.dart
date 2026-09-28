@@ -8,6 +8,7 @@ import '../models/custom_deck_record.dart';
 import '../services/custom_deck_storage.dart';
 import 'custom_deck_builder_screen.dart';
 import 'progress_overview_screen.dart';
+import 'speech_practice_screen.dart';
 
 /// Lets the user pick which deck to study 
 /// built in - default decks 
@@ -223,7 +224,21 @@ class _DeckTile extends StatelessWidget {
                   subtitle: const Text('Get quizzed and track your progress.'),
                   onTap: () {
                     Navigator.of(sheetContext).pop();
-                    _showOrderPicker(context);
+                    _showOrderPicker(
+                      context,
+                      screenBuilder: (order) => FlashcardPracticeScreen(deck: deck, order: order),);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.mic),
+                  title: const Text('Pronunciation'),
+                  subtitle: const Text('Hear it, say it, get checked by voice.'),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    _showOrderPicker(
+                      context,
+                      screenBuilder: (order) => SpeechPracticeScreen(deck: deck, order: order),
+                    );
                   },
                 ),
                 const SizedBox(height: 8),
@@ -235,7 +250,7 @@ class _DeckTile extends StatelessWidget {
     );
   }
 
-  Future<void> _showOrderPicker(BuildContext context) async {
+  Future<void> _showOrderPicker(BuildContext context, {required Widget Function(PracticeOrder order) screenBuilder,}) async {
     await showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
@@ -257,10 +272,7 @@ class _DeckTile extends StatelessWidget {
                     Navigator.of(sheetContext).pop();
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => FlashcardPracticeScreen(
-                          deck: deck,
-                          order: PracticeOrder.sequential,
-                        ),
+                        builder: (_) => screenBuilder(PracticeOrder.sequential),
                       ),
                     );
                   },
@@ -273,10 +285,7 @@ class _DeckTile extends StatelessWidget {
                     Navigator.of(sheetContext).pop();
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => FlashcardPracticeScreen(
-                          deck: deck,
-                          order: PracticeOrder.random,
-                        ),
+                        builder: (_) => screenBuilder(PracticeOrder.random),
                       ),
                     );
                   },
