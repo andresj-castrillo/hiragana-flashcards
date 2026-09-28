@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.andresjcastrillo.hiragana_flashcards"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
